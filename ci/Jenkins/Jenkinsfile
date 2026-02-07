@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     DOCKER_IMAGE = "balu7777/demo-java-app:${build_version}"
-    SONAR_URL    = "http://localhost:9000"
+    SONAR_URL    = "http://sonarqube:9000"
   }
 
   stages {
