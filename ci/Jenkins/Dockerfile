@@ -1,21 +1,9 @@
-FROM jenkins/jenkins:lts-jdk17
+FROM eclipse-temurin:17-jre
 
-USER root
+WORKDIR /app
 
-# Install required packages + Docker CLI only
-RUN apt-get update && apt-get install -y \
-    maven \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release \
-    docker.io \
-    && rm -rf /var/lib/apt/lists/*
-
-# Add jenkins user to docker group
-RUN usermod -aG docker jenkins
-
-# Switch back to jenkins user
-USER jenkins
+COPY target/demo-java-app.jar app.jar
 
 EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar"]
