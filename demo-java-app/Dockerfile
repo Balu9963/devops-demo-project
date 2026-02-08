@@ -1,12 +1,10 @@
-# Base image 
-FROM openjdk
+# App base image
+FROM eclipse-temurin:17-jre
 
-# setting artifact path
-ARG artifact=target/demo-java-app.jar
+WORKDIR /app
 
-WORKDIR /opt/app
+COPY target/demo-java-app.jar app.jar
 
-COPY ${artifact} app.jar
+EXPOSE 8080
 
-# Entrypoint for running app
 ENTRYPOINT ["java","-jar","app.jar"]
