@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     DOCKER_IMAGE = "balu7777/demo-java-app:${build_version}"
-    SONAR_URL    = "http://sonarqube:9000"
+    SONAR_URL    = "http://sonarqube:9000"   // change if NodePort
   }
 
   stages {
@@ -64,11 +64,13 @@ pipeline {
 
             sed -i "s/tag: .*/tag: \\"${build_version}\\"/" helm/app/values.yaml
 
-            git diff --quiet && echo "No changes to commit" && exit 0
-
-            git add helm/app/values.yaml
-            git commit -m "Update deployment image to ${build_version}"
-            git push https://${GITHUB_TOKEN}@github.com/Balu9963/devops-demo-project.git HEAD:main
+            if git diff --quiet; then
+              echo "No changes to commit"
+            else
+              git add helm/app/values.yaml
+              git commit -m "Update deployment image to ${build_version}"
+              git push https://${GITHUB_TOKEN}@github.com/Balu9963/devops-demo-project.git HEAD:main
+            fi
           '''
         }
       }
