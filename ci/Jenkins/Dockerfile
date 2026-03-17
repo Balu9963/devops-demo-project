@@ -1,9 +1,16 @@
-FROM eclipse-temurin:17-jre
 
-WORKDIR /app
+FROM jenkins/jenkins:lts-jdk17
 
-COPY target/demo-java-app.jar app.jar
+USER root
+
+# Install Maven
+RUN apt-get update && apt-get install -y maven
+
+# Install Docker CLI only (lighter)
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    usermod -aG docker jenkins
+
+USER jenkins
 
 EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","app.jar"]
